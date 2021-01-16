@@ -4,8 +4,7 @@
 #include "stdafx.h"
 #include "LFXUtil.h"
 #include "LFXDecl.h"
-#include "../AlienFX-SDK/AlienFX_SDK/AlienFX_SDK.h"
-
+#include "../AlienFX-SDK/AlienFX_SDK.h"
 namespace 
 {
 	LFXUtil::LFXUtilC lfxUtil;

@@ -141,9 +141,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="alienfx-cli\LFXUtil.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="ConsoleApplication1.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="alienfx-cli\alienfx-cli.vcxproj">
+      <Project>{ff6119ea-878f-4e7b-9fcd-8410a5d3fbf8}</Project>
+    </ProjectReference>
     <ProjectReference Include="AlienFX-SDK\AlienFX_SDK.vcxproj">
       <Project>{90879993-7449-4a28-972e-7228d4c4d0a8}</Project>
     </ProjectReference>
