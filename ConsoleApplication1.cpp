@@ -13,6 +13,24 @@ namespace
 	LFXUtil::LFXUtilC lfxUtil;
 }
 
+void loopKeyboardOnce() {
+	for (int i = 0; i < 4; i++) {
+		AlienFX_SDK::Functions::SetColor(i, 0, 255, 0);
+		AlienFX_SDK::Functions::UpdateColors();
+		Sleep(200);
+
+		AlienFX_SDK::Functions::SetColor(i, 0, 0, 0);
+		AlienFX_SDK::Functions::UpdateColors();
+		AlienFX_SDK::Functions::Reset(false);
+	}
+	
+}
+
+void reset() {
+	AlienFX_SDK::Functions::Reset(true);
+}
+
+
 int main(int argc, char* argv[])
 {
 	//the code start from here, credit is belongs to Github: @T-Troll
@@ -75,37 +93,77 @@ int main(int argc, char* argv[])
 				// Let's probe low-level lights....
 
 				//LanHao: yeah! thanks for the example, now it is time to make it auto!, i'm trying this. just for keyboard, i'm trying
-				for (int i = 0; i < 4; i++) {
-					//int j = 0;
-					cout << "Testing light #" << i << "(enter name or ID, ENTER for skip): ";
-					AlienFX_SDK::Functions::SetColor(i, 0, 255, 0);
-					AlienFX_SDK::Functions::UpdateColors();
-					Sleep(200);
-					//std::cin.getline(name, 255);
-					if (name[0] != 0) {
-						//not skipped
-						if (isdigit(name[0]) && res == (-1)) {
-							outName = lfxUtil.GetLightInfo(0, atoi(name))->desc;
-						}
-						else {
-							outName = name;
-						}
-						cout << "Final name is " << outName << ", ";
-						// Store value...
-						AlienFX_SDK::mapping map;
-						map.devid = pids[cdev];
-						map.lightid = i;
-						map.name = std::string(outName);
-						AlienFX_SDK::Functions::GetMappings()->push_back(map);
-					}
-					else {
-						cout << "Skipped. ";
-					}
-					AlienFX_SDK::Functions::SetColor(i, 0, 0, 0);
-					AlienFX_SDK::Functions::UpdateColors();
-					AlienFX_SDK::Functions::Reset(false);
-					Sleep(100);
-				}
+				reset();
+
+				AlienFX_SDK::Functions::SetColor(0, 0, 255, 0);
+				AlienFX_SDK::Functions::SetColor(2, 0, 255, 0);
+				AlienFX_SDK::Functions::UpdateColors();
+				Sleep(200);
+				AlienFX_SDK::Functions::SetColor(0, 0, 0, 0);
+				AlienFX_SDK::Functions::SetColor(2, 0, 0, 0);
+				Sleep(200);
+
+
+				AlienFX_SDK::Functions::SetColor(1, 0, 255, 0);
+				AlienFX_SDK::Functions::SetColor(3, 0, 255, 0);
+				AlienFX_SDK::Functions::UpdateColors();
+				Sleep(200);
+				AlienFX_SDK::Functions::SetColor(1, 0, 0, 0);
+				AlienFX_SDK::Functions::SetColor(3, 0, 0, 0);
+				Sleep(200);
+
+
+				loopKeyboardOnce();
+				AlienFX_SDK::Functions::SetColor(0, 0, 255, 0);
+				AlienFX_SDK::Functions::SetColor(2, 0, 255, 0);
+				AlienFX_SDK::Functions::UpdateColors();
+				Sleep(200);
+				AlienFX_SDK::Functions::SetColor(0, 0, 0, 0);
+				AlienFX_SDK::Functions::SetColor(2, 0, 0, 0);
+				Sleep(200);
+
+
+				AlienFX_SDK::Functions::SetColor(1, 0, 255, 0);
+				AlienFX_SDK::Functions::SetColor(3, 0, 255, 0);
+				AlienFX_SDK::Functions::UpdateColors();
+				Sleep(200);
+				AlienFX_SDK::Functions::SetColor(1, 0, 0, 0);
+				AlienFX_SDK::Functions::SetColor(3, 0, 0, 0);
+				Sleep(200);
+				reset();
+				loopKeyboardOnce();
+
+				//for (int i = 0; i < 4; i++) {
+				//	//int j = 0;
+				//	cout << "Testing light #" << i << "(enter name or ID, ENTER for skip): ";
+				//	AlienFX_SDK::Functions::SetColor(i, 0, 255, 0);
+				//	AlienFX_SDK::Functions::UpdateColors();
+				//	Sleep(200);
+				//	//std::cin.getline(name, 255);
+				//	if (name[0] != 0) {
+				//		//not skipped
+				//		if (isdigit(name[0]) && res == (-1)) {
+				//			outName = lfxUtil.GetLightInfo(0, atoi(name))->desc;
+				//		}
+				//		else {
+				//			outName = name;
+				//		}
+				//		cout << "Final name is " << outName << ", ";
+				//		// Store value...
+				//		AlienFX_SDK::mapping map;
+				//		map.devid = pids[cdev];
+				//		map.lightid = i;
+				//		map.name = std::string(outName);
+				//		AlienFX_SDK::Functions::GetMappings()->push_back(map);
+				//	}
+				//	else {
+				//		cout << "Skipped. ";
+				//	}
+				//	AlienFX_SDK::Functions::SetColor(i, 0, 0, 0);
+				//	AlienFX_SDK::Functions::UpdateColors();
+				//	AlienFX_SDK::Functions::Reset(false);
+				//	Sleep(100);
+				//}
 				// now store config...
 				AlienFX_SDK::Functions::SaveMappings();
 			}
@@ -119,7 +177,8 @@ int main(int argc, char* argv[])
 
 
 
-	}else {
+	}
+	else {
 		cout << "AlienFX devices not present, please check device manage!" << endl;
 	}
 	return 0;
@@ -127,6 +186,10 @@ int main(int argc, char* argv[])
 
 
 }
+
+
+
+
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
 // Debug program: F5 or Debug > Start Debugging menu
