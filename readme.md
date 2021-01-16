@@ -12,10 +12,12 @@ i just started learning, new progress will show here.
 - [ ] auto game light 
 - [ ] etc
 
-### credit
-thanks to [T-Troll](https://github.com/T-Troll) project [AlienFX-SDK](https://github.com/T-Troll/AlienFX-SDK), and [alienfx-tools]( https://github.com/T-Troll/alienfx-tools).    
+### Credit
+Thanks to [T-Troll](https://github.com/T-Troll) project [AlienFX-SDK](https://github.com/T-Troll/AlienFX-SDK), and [alienfx-tools]( https://github.com/T-Troll/alienfx-tools).    
 
 I copied some code from alienfx-tools for now to study how this works.
+
+Thanks to [Sheraze](https://github.com/Sheraze57) that gave me a lot help today to learn C++.
 
 Tested on Dell G5
 
@@ -38,7 +40,8 @@ Tested on Dell G5
 
 ### 致
 感谢 [T-Troll](https://github.com/T-Troll) 项目[AlienFX-SDK](https://github.com/T-Troll/AlienFX-SDK), 和[alienfx-tools]( https://github.com/T-Troll/alienfx-tools).    
+目前我从 alienfx-tools 复制了一些代码 来学习它是如何工作的。  
+感谢 [Sheraze](https://github.com/Sheraze57) 这两天给了我很多在学C++上的帮助 .
 
-目前我从 alienfx-tools 复制了一些代码 来学习它是如何工作的。
 
 已测机型 Dell G5
