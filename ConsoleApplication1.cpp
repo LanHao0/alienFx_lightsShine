@@ -5,7 +5,7 @@
 #include <vector>
 #include "./AlienFX-SDK/AlienFX_SDK.h"
 #include "./alienfx-cli/LFXUtil.h"
-
+#include <fstream>
 using namespace std;
 
 namespace
@@ -13,17 +13,145 @@ namespace
 	LFXUtil::LFXUtilC lfxUtil;
 }
 
-void loopKeyboardOnce() {
-	for (int i = 0; i < 4; i++) {
-		AlienFX_SDK::Functions::SetColor(i, 0, 255, 0);
-		AlienFX_SDK::Functions::UpdateColors();
-		Sleep(200);
+int random(int max, int min) {
+	return rand() % (max - min + 1) + min;
+}
+bool is_number(const std::string& s)
+{
+	std::string::const_iterator it = s.begin();
+	while (it != s.end() && std::isdigit(*it)) ++it;
+	return !s.empty() && it == s.end();
+}
 
-		AlienFX_SDK::Functions::SetColor(i, 0, 0, 0);
-		AlienFX_SDK::Functions::UpdateColors();
-		AlienFX_SDK::Functions::Reset(false);
+
+vector<string> split(const string& str, const string& delim) {
+	vector<string> res;
+	if ("" == str) return res;
+	//先将要切割的字符串从string类型转换为char*类型
+	char* strs = new char[str.length() + 1]; //不要忘了
+	strcpy(strs, str.c_str());
+
+	char* d = new char[delim.length() + 1];
+	strcpy(d, delim.c_str());
+
+	char* p = strtok(strs, d);
+	while (p) {
+		string s = p; //分割得到的字符串转换为string类型
+		res.push_back(s); //存入结果数组
+		p = strtok(NULL, d);
 	}
-	
+
+	return res;
+}
+
+//loopkeyboard, 0(notReverse)|1(reverse), 0, 255, 0
+
+void loopKeyboardOnce(int reverse, int r, int g, int b) {
+	if (reverse == 0) {
+		//not reverse
+		for (int i = 0; i < 4; i++) {
+			AlienFX_SDK::Functions::SetColor(i, r, g, b);
+			AlienFX_SDK::Functions::UpdateColors();
+			Sleep(200);
+
+			AlienFX_SDK::Functions::SetColor(i, 0, 0, 0);
+			AlienFX_SDK::Functions::UpdateColors();
+			AlienFX_SDK::Functions::Reset(false);
+		}
+	}
+	else {
+		for (int i = 4; i > 0; i--) {
+			AlienFX_SDK::Functions::SetColor(i, r, g, b);
+			AlienFX_SDK::Functions::UpdateColors();
+			Sleep(200);
+
+			AlienFX_SDK::Functions::SetColor(i, 0, 0, 0);
+			AlienFX_SDK::Functions::UpdateColors();
+			AlienFX_SDK::Functions::Reset(false);
+		}
+	}
+}
+
+void loopKeyboardRandom(int reverse) {
+	if (reverse == 0) {
+		//not reverse
+		for (int i = 0; i < 4; i++) {
+			AlienFX_SDK::Functions::SetColor(i, random(255, 100), random(255, 100), random(255, 100));
+			AlienFX_SDK::Functions::UpdateColors();
+			Sleep(200);
+
+			AlienFX_SDK::Functions::SetColor(i, 0, 0, 0);
+			AlienFX_SDK::Functions::UpdateColors();
+			AlienFX_SDK::Functions::Reset(false);
+		}
+	}
+	else {
+		for (int i = 4; i > 0; i--) {
+			AlienFX_SDK::Functions::SetColor(i, random(255, 100), random(255, 100), random(255, 100));
+			AlienFX_SDK::Functions::UpdateColors();
+			Sleep(200);
+
+			AlienFX_SDK::Functions::SetColor(i, 0, 0, 0);
+			AlienFX_SDK::Functions::UpdateColors();
+			AlienFX_SDK::Functions::Reset(false);
+		}
+	}
+}
+
+void loopLightBarOnce(int reverse,int r,int g,int b) {
+
+	if (reverse == 0) {
+		for (int i = 4; i < 16; i++) {
+			AlienFX_SDK::Functions::SetColor(i, r, g, b);
+			AlienFX_SDK::Functions::UpdateColors();
+			Sleep(200);
+
+			AlienFX_SDK::Functions::SetColor(i, 0, 0, 0);
+			AlienFX_SDK::Functions::UpdateColors();
+			AlienFX_SDK::Functions::Reset(false);
+		}
+	}
+	else {
+		for (int i = 16; i > 5; i--) {
+			AlienFX_SDK::Functions::SetColor(i, r, g, b);
+			AlienFX_SDK::Functions::UpdateColors();
+			Sleep(200);
+
+			AlienFX_SDK::Functions::SetColor(i, 0, 0, 0);
+			AlienFX_SDK::Functions::UpdateColors();
+			AlienFX_SDK::Functions::Reset(false);
+		}
+	}
+
+
+}
+
+
+void loopLightBarRandom(int reverse) {
+	if (reverse == 0) {
+		for (int i = 4; i < 16; i++) {
+			AlienFX_SDK::Functions::SetColor(i, random(255,100), random(255, 100), random(255, 100));
+			AlienFX_SDK::Functions::UpdateColors();
+			Sleep(200);
+
+			AlienFX_SDK::Functions::SetColor(i, 0, 0, 0);
+			AlienFX_SDK::Functions::UpdateColors();
+			AlienFX_SDK::Functions::Reset(false);
+		}
+	}
+	else {
+		for (int i = 16; i > 5; i--) {
+			AlienFX_SDK::Functions::SetColor(i, random(255, 100), random(255, 100), random(255, 100));
+			AlienFX_SDK::Functions::UpdateColors();
+			Sleep(200);
+
+			AlienFX_SDK::Functions::SetColor(i, 0, 0, 0);
+			AlienFX_SDK::Functions::UpdateColors();
+			AlienFX_SDK::Functions::Reset(false);
+		}
+	}
+
+
 }
 
 void reset() {
@@ -31,6 +159,28 @@ void reset() {
 }
 
 
+void parseDIYLine(string line) {
+	std::vector<string> res = split(line, ", ");
+	std::string command = res[0];
+	if (is_number(command)) {
+		AlienFX_SDK::Functions::SetColor(std::stoi(command), std::stoi(res[1]), std::stoi(res[2]), std::stoi(res[3]));
+		AlienFX_SDK::Functions::UpdateColors();
+	}
+	else {
+		if (command == "loopkeyboard") {
+			loopKeyboardOnce(std::stoi(res[1]), std::stoi(res[2]), std::stoi(res[3]), std::stoi(res[4]));
+		}
+		else if (command == "loopkeyboardRandom") {
+			loopKeyboardRandom(std::stoi(res[1]));
+		}
+		else if (command == "looplightbar") {
+			loopLightBarOnce(std::stoi(res[1]), std::stoi(res[2]), std::stoi(res[3]), std::stoi(res[4]));
+		}
+		else if (command == "looplightbarRadom") {
+			loopLightBarRandom(std::stoi(res[1]));
+		}
+	}
+}
 int main(int argc, char* argv[])
 {
 	//the code start from here, credit is belongs to Github: @T-Troll
@@ -92,47 +242,50 @@ int main(int argc, char* argv[])
 					numlights = atoi(argv[1]);
 				// Let's probe low-level lights....
 
-				//LanHao: yeah! thanks for the example, now it is time to make it auto!, i'm trying this. just for keyboard, i'm trying
+				//select the file
 				reset();
+				char filename[256];
+				cout << "Enter DIY txt filename: ";
+				std::cin.getline(filename, 255);
+				std::ifstream input(filename);
 
-				AlienFX_SDK::Functions::SetColor(0, 0, 255, 0);
-				AlienFX_SDK::Functions::SetColor(2, 0, 255, 0);
-				AlienFX_SDK::Functions::UpdateColors();
-				Sleep(200);
-				AlienFX_SDK::Functions::SetColor(0, 0, 0, 0);
-				AlienFX_SDK::Functions::SetColor(2, 0, 0, 0);
-				Sleep(200);
+				for (std::string line; getline(input, line); )
+				{
+					cout << line;
+					
+					if (is_number(line)) {
+						Sleep(std::stoi(line));
+					}
+					else {
+						if (line.find("//") != std::string::npos) {
+							//comment 注释行跳过
+						}
+						else {
+							if (line == "reset")
+							{
+								reset();
+							}
+							else {
+								if (line.find("#") != std::string::npos) {
+									//found
+									std::vector<string> res = split(line, "#");
+									for (int i = 0; i < res.size(); ++i)
+									{
+										parseDIYLine(res[i]);
+									}
 
 
-				AlienFX_SDK::Functions::SetColor(1, 0, 255, 0);
-				AlienFX_SDK::Functions::SetColor(3, 0, 255, 0);
-				AlienFX_SDK::Functions::UpdateColors();
-				Sleep(200);
-				AlienFX_SDK::Functions::SetColor(1, 0, 0, 0);
-				AlienFX_SDK::Functions::SetColor(3, 0, 0, 0);
-				Sleep(200);
+								}
+								else {
+									parseDIYLine(line);
+								}
+							}
+						}
+					}
+				}
 
-
-				loopKeyboardOnce();
-				AlienFX_SDK::Functions::SetColor(0, 0, 255, 0);
-				AlienFX_SDK::Functions::SetColor(2, 0, 255, 0);
-				AlienFX_SDK::Functions::UpdateColors();
-				Sleep(200);
-				AlienFX_SDK::Functions::SetColor(0, 0, 0, 0);
-				AlienFX_SDK::Functions::SetColor(2, 0, 0, 0);
-				Sleep(200);
-
-
-				AlienFX_SDK::Functions::SetColor(1, 0, 255, 0);
-				AlienFX_SDK::Functions::SetColor(3, 0, 255, 0);
-				AlienFX_SDK::Functions::UpdateColors();
-				Sleep(200);
-				AlienFX_SDK::Functions::SetColor(1, 0, 0, 0);
-				AlienFX_SDK::Functions::SetColor(3, 0, 0, 0);
-				Sleep(200);
-				reset();
-				loopKeyboardOnce();
-
+			
+				
 				//for (int i = 0; i < 4; i++) {
 				//	//int j = 0;
 				//	cout << "Testing light #" << i << "(enter name or ID, ENTER for skip): ";
