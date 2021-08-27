@@ -1,0 +1,15 @@
+looplightbarRadom,0
+300
+looplightbarRadom,0
+300
+looplightbarRadom,0
+300
+looplightbarRadom,0
+300
+0,0,255,0
+2,0,255,0
+300
+1,0,255,0
+3,0,255,0
+300
+reset

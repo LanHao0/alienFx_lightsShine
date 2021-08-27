@@ -155,7 +155,11 @@ void loopLightBarRandom(int reverse) {
 }
 
 void reset() {
-	AlienFX_SDK::Functions::Reset(true);
+	for (int i = 0; i < 16; i++) {
+		AlienFX_SDK::Functions::SetColor(i, 0, 0, 0);
+		AlienFX_SDK::Functions::UpdateColors();
+		AlienFX_SDK::Functions::Reset(false);
+	}
 }
 
 
@@ -245,44 +249,49 @@ int main(int argc, char* argv[])
 				//select the file
 				reset();
 				char filename[256];
-				cout << "Enter DIY txt filename: ";
-				std::cin.getline(filename, 255);
-				std::ifstream input(filename);
+				//cout << "Enter DIY txt filename: ";
+				//std::cin.getline(filename, 255);
+				std::ifstream input("transport.txt");
 
-				for (std::string line; getline(input, line); )
-				{
-					cout << line;
-					
-					if (is_number(line)) {
-						Sleep(std::stoi(line));
-					}
-					else {
-						if (line.find("//") != std::string::npos) {
-							//comment 注释行跳过
+				while (true) {
+					std::ifstream input("transport.txt");
+					for (std::string line; getline(input, line); )
+					{
+						cout << line;
+
+						if (is_number(line)) {
+							Sleep(std::stoi(line));
 						}
 						else {
-							if (line == "reset")
-							{
-								reset();
+							if (line.find("//") != std::string::npos) {
+								//comment 注释行跳过
 							}
 							else {
-								if (line.find("#") != std::string::npos) {
-									//found
-									std::vector<string> res = split(line, "#");
-									for (int i = 0; i < res.size(); ++i)
-									{
-										parseDIYLine(res[i]);
-									}
-
-
+								if (line == "reset")
+								{
+									reset();
 								}
 								else {
-									parseDIYLine(line);
+									if (line.find("#") != std::string::npos) {
+										//found
+										std::vector<string> res = split(line, "#");
+										for (int i = 0; i < res.size(); ++i)
+										{
+											parseDIYLine(res[i]);
+										}
+
+
+									}
+									else {
+										parseDIYLine(line);
+									}
 								}
 							}
 						}
 					}
+					Sleep(100);
 				}
+
 
 			
 				
